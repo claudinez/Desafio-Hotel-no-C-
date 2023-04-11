@@ -1,0 +1,72 @@
+using System;
+
+class Pessoa
+{
+    public string Nome { get; set; }
+    public string CPF { get; set; }
+}
+
+class Suite
+{
+    public int Numero { get; set; }
+    public int Capacidade { get; set; }
+    public double ValorDiaria { get; set; }
+}
+
+class Reserva
+{
+    public Pessoa Hospede { get; set; }
+    public Suite SuiteReservada { get; set; }
+    public DateTime DataInicio { get; set; }
+    public DateTime DataFim { get; set; }
+
+    public int CalcularQuantidadeHospedes()
+    {
+        return Hospede != null ? 1 : 0;
+    }
+
+    public double CalcularValorTotal()
+    {
+        double valorTotal = (DataFim - DataInicio).TotalDays * SuiteReservada.ValorDiaria;
+        if ((DataFim - DataInicio).TotalDays > 10)
+        {
+            valorTotal *= 0.9;
+        }
+        return valorTotal;
+    }
+}
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        Pessoa hospede = new Pessoa()
+        {
+            Nome = "João da Silva",
+            CPF = "123.456.789-00"
+        };
+
+        Suite suite = new Suite()
+        {
+            Numero = 1,
+            Capacidade = 2,
+            ValorDiaria = 150.0
+        };
+
+        Reserva reserva = new Reserva()
+        {
+            Hospede = hospede,
+            SuiteReservada = suite,
+            DataInicio = new DateTime(2023, 4, 10),
+            DataFim = new DateTime(2023, 4, 20)
+        };
+
+        Console.WriteLine($"Nome do hóspede: {reserva.Hospede.Nome}");
+        Console.WriteLine($"Número da suíte: {reserva.SuiteReservada.Numero}");
+        Console.WriteLine($"Valor da diária: {reserva.SuiteReservada.ValorDiaria}");
+        Console.WriteLine($"Data de início: {reserva.DataInicio.ToString("dd/MM/yyyy")}");
+        Console.WriteLine($"Data de fim: {reserva.DataFim.ToString("dd/MM/yyyy")}");
+        Console.WriteLine($"Quantidade de hóspedes: {reserva.CalcularQuantidadeHospedes()}");
+        Console.WriteLine($"Valor total da reserva: {reserva.CalcularValorTotal()}");
+    }
+}
